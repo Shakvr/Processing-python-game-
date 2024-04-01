@@ -1,0 +1,86 @@
+from course import*
+from ecran import*
+from obstacles import*
+from collision_ import*
+from son import*
+
+mes_balles=[]
+sequence_images=[]
+asterix=nouvelle_course(sequence_images)
+ACCUEIL=0
+JEU=1
+FIN=2
+affichage = ACCUEIL
+obstacles=[]
+a=True
+cf=0 
+def setup():
+    size(600,300)
+    frameRate(20)
+    imageMode(CENTER)
+    rectMode(CENTER)
+    textAlign(CENTER)
+    for i in range(4):
+        nom_fichier='asterix_droite_'+str(i)+'.png'
+        img=loadImage(nom_fichier)
+        sequence_images.append(img)
+    setup_sound()
+    #play_sound()
+       
+def draw():
+    global cf
+    cf+=1
+    
+    global affichage   
+    global delai 
+    entree_clavier(asterix)
+    if affichage==ACCUEIL:
+        if accueil()=="commencer":
+            affichage=JEU    
+    elif affichage==JEU:
+            jeu()
+       # if course['x']>=width-sequence_images[0].width/2:
+       #     affichage="fin"
+    elif affichage==FIN:
+        fin()
+    for ma_balle in mes_balles:
+        if affichage==JEU:
+            afficher_obstacle(ma_balle)
+            avancer_obstacle(ma_balle)
+        
+        if collision(ma_balle,asterix):
+            affichage=FIN 
+            fin()  
+ 
+            
+        if atteint_limite(ma_balle):
+            mes_balles.remove(ma_balle)
+    print(cf)  
+    if cf==10:
+        mes_balles.append(obstacle())
+        cf=0
+        
+    if creer_obstacle():
+        mes_balles.append(obstacle())  
+  
+        
+def jeu():
+    background(180,180,180)
+    afficher_personnage(asterix)
+   
+    
+def entree_clavier(c):    
+    global a
+    if  a== True:
+                                        
+        if key==CODED:
+            if keyCode == UP and c['y']>=50:
+                c['y']-=50
+            if keyCode == DOWN and c['y']<=250:
+                c['y']+=50
+            a=False
+                   
+def keyPressed():
+    global a
+    if a== False: a=True
+    

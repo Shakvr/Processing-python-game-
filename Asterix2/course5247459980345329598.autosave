@@ -1,0 +1,22 @@
+def nouvelle_course(sequence):
+    c={'x':50,'y':300,'image':sequence,'index':0}
+    return c
+
+def afficher_personnage(c):
+    c['index']=c['index']+1
+    #c['x']=c['x']+5
+    indice=c['index']
+    if indice<len(c['image']): #and c['x']<width-c['image'][indice].width/2:
+        image(c['image'][indice],c['x'],c['y'])
+    else:
+        c['index']=0   
+    
+def entree_clavier(c):
+    if keyPressed :
+        if key==CODED:
+            if keyCode == UP:
+                c['y']-=44
+            
+            if keyCode == DOWN:
+                c['y']+=44
+    

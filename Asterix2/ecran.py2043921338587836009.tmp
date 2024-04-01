@@ -1,0 +1,35 @@
+from son import*
+
+def accueil():
+    background(255,255,255)
+    textSize(30)
+    text("Le meilleur jeu de tous les temps",width/2,height/3)
+    textSize(32)
+    if bouton(width/2,2*height/3,200,60,'Commencer'):
+        play_sound()
+        return "commencer"
+
+
+def bouton(x,y,largeur,hauteur,texte):
+    if  x-largeur/2< mouseX < x + largeur/2 and  y - hauteur/2< mouseY < y + hauteur/2 :
+        fill (140,90,190)
+        rect(x,y,largeur,hauteur,20)
+        fill(0,0,0)
+        text(texte,x,y+hauteur*0.2)
+        if mousePressed :
+            return True
+    else:
+        fill (100,70,170)
+        rect(x,y,largeur,hauteur,20)
+        fill(0,0,0)
+        text(texte,x,y+hauteur*0.2)
+    return False
+
+def fin():
+    background(250,250,250)   
+    textSize(40)
+    fill(0, 0, 0)
+    text("Tu as perdu LOL",width/2,height/2)
+    if bouton(width/2,2*height/3,200,60,'Rejouer'):
+        return "Rejouer"
+    noLoop()

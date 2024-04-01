@@ -1,0 +1,143 @@
+from course import*
+from ecran import*
+from obstacles import*
+from collision_ import*
+from son import*
+from death import*
+
+mes_balles=[]
+sequence_images=[]
+sequence_death=[]
+asterix=nouvelle_course(sequence_images)
+asterix_mort=death_animation_sequence(sequence_death)
+ACCUEIL=0
+JEU=1
+FIN=2
+DEATH=3
+affichage = ACCUEIL
+obstacles=[]
+a=True
+cf=0 
+cfd=0 
+collision_flag= False 
+def setup():
+    global bim
+    bim=loadImage("Bimage.jpg")
+    size(600,300)
+    frameRate(20)
+    imageMode(CENTER)
+    rectMode(CENTER)
+    textAlign(CENTER)
+    for i in range(4):
+        nom_fichier='asterix_droite_'+str(i)+'.png'
+        img=loadImage(nom_fichier)
+        sequence_images.append(img)
+    setup_sound()
+    for i in range(7):
+        nom_fichier='hk_death_'+str(i)+'.png'
+        img=loadImage(nom_fichier)
+        sequence_death.append(img)
+    #play_sound()
+       
+def draw():
+    global bim 
+    #global cf #compteur de frames  
+    global collision_flag 
+
+    background(bim)
+    global affichage   
+    global delai 
+    #if 
+
+    if affichage==ACCUEIL:
+        if accueil()=="commencer":
+            affichage=JEU
+    elif affichage==JEU:
+            jeu()
+    if fin()=="Rejouer":
+        affichage=JEU
+       # if course['x']>=width-sequence_images[0].width/2:
+       #     affichage="fin"
+    elif affichage==FIN:
+        fin()
+    elif affichage==DEATH:
+        death()
+
+    
+    if creer_obstacle():
+        #mes_balles.append(obstacle())  
+        pass
+  
+        
+def jeu():
+    entree_clavier(asterix)
+    global cf
+    global collision_flag
+    cf+=1
+    global affichage
+    #background(180,180,29)
+    afficher_personnage(asterix)
+    global mes_balles
+    for ma_balle in mes_balles:
+        if affichage==JEU:
+            afficher_obstacle(ma_balle)
+            avancer_obstacle(ma_balle)
+        
+        if collision(ma_balle,asterix):
+            collision_flag= True
+            #delay(3500)
+            asterix_mort['y']=asterix['y']
+            affichage=DEATH
+            #fin()  
+            
+        if atteint_limite(ma_balle):
+            mes_balles.remove(ma_balle)
+    print(cf)  
+    if cf==10 and collision_flag==False:
+        mes_balles.append(obstacle())
+        cf=0
+   
+    
+def entree_clavier(c):    
+    global a
+    
+    if  a== True:
+                                       
+        if key==CODED:
+            play_sound3() 
+            
+            if keyCode == UP and c['y']>=50:
+                c['y']-=50
+            if keyCode == DOWN and c['y']<=250:
+                c['y']+=50
+            a=False
+            
+                   
+def keyPressed():
+    global a
+    if a== False: a=True
+def death():
+    
+    print('in death function')
+    global cfd
+    global affichage
+    cfd+=1
+    print ('cfd= ',cfd)
+    global mes_balles
+    global bim 
+    background(bim)
+    
+    stop_sound()
+    play_sound2()
+    for ma_balle in mes_balles:
+        afficher_obstacle(ma_balle)
+    afficher_death(asterix_mort,cfd)
+    if cfd==70:
+        affichage=FIN
+    
+     
+
+
+    
+    
+    
